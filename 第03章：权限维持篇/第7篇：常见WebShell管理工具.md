@@ -8,7 +8,7 @@
 
 中国菜刀是一款专业的网站管理软件，用途广泛，使用方便，小巧实用。只要支持动态脚本的网站，都可以用中国菜刀来进行管理！在非简体中文环境下使用，自动切换到英文界面。UNICODE方式编译，支持多国语言输入显示。
 
-![](./image/privilege-6-1.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-1.png)
 
 
 
@@ -18,7 +18,7 @@ AntSword是一个开放源代码，跨平台的网站管理工具，旨在满足
 
 github项目地址：https://github.com/AntSwordProject/antSword
 
-![](./image/privilege-6-2.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-2.png)
 
 
 
@@ -28,7 +28,7 @@ github项目地址：https://github.com/AntSwordProject/antSword
 
 github项目地址：https://github.com/Chora10/Cknife
 
-![](./image/privilege-6-3.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-3.png)
 
 
 
@@ -38,13 +38,13 @@ github项目地址：https://github.com/Chora10/Cknife
 
 github地址：https://github.com/rebeyond/Behinder
 
-![](./image/privilege-6-4.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-4.png)
 
 **5、Xise**
 
 XISE WebShell管理工具。
 
-![](./image/privilege-6-5.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-5.png)
 
 
 
@@ -54,7 +54,7 @@ Altman3是一款渗透测试软件，基于.Net4.0开发，依托Eto.Form可以�
 
 github项目地址：https://github.com/keepwn/Altman
 
-![](./image/privilege-6-6.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-6.png)
 
 
 
@@ -73,7 +73,7 @@ weevely <URL> <password> [cmd]
 
 同时，在Kali 2.0 版本下，集成了三款Web后门工具：WebaCoo、weevely、PHP Meterpreter。
 
-![](./image/privilege-6-7.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-7.png)
 
 
 
@@ -83,7 +83,7 @@ QuasiBot是一款php编写的webshell管理工具，可以对webshell进行远�
 
 github项目地址：<https://github.com/Smaash/quasibot>
 
-![](./image/privilege-6-8.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-8.png)
 
 
 
@@ -102,7 +102,7 @@ Example :
         python webshell-sniper.py http://127.0.0.1/c.php POST c
 ```
 
-![](./image/privilege-6-9.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-9.png)
 
 
 
@@ -112,6 +112,6 @@ Example :
 
 github项目地址：https://github.com/boy-hack/WebshellManager
 
-![](./image/privilege-6-10.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-6-10.png)
 
 我在知识星球发起了一个小讨论，也收集到了一些webshell管理工具，如 hatchet、K8飞刀、lanker，欢迎补充。
