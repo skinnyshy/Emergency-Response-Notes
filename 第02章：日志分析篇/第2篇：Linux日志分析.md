@@ -24,15 +24,15 @@ Linux系统拥有非常灵活和强大的日志功能，可以保存几乎所有
 | /var/log/secure |      记录验证和授权方面的信息，只要涉及账号和密码的程序都会记录，比如SSH登录，su切换用户，sudo授权，甚至添加用户和修改用户密码都会记录在这个日志文件中      |
 
 比较重要的几个日志：
-	登录失败记录：/var/log/btmp     //lastb
-	最后一次登录：/var/log/lastlog  //lastlog
-	登录成功记录: /var/log/wtmp     //last
-	登录日志记录：/var/log/secure   
+	登录失败记录：`/var/log/btmp     //lastb`
+	最后一次登录：`/var/log/lastlog  //lastlog`
+	登录成功记录: `/var/log/wtmp     //last`
+	登录日志记录：`/var/log/secure`   
 
-​	目前登录用户信息：/var/run/utmp  //w、who、users
+​	目前登录用户信息：`/var/run/utmp  //w、who、users`
 
-​	历史命令记录：history
-​	仅清理当前用户： history -c
+​	历史命令记录：`history`
+​	仅清理当前用户： `history -c`
 
 
 ### 0x02 日志分析技巧
@@ -80,8 +80,10 @@ Linux下常用的shell命令如：find、grep 、egrep、awk、sed
 
 5、只是显示/etc/passwd的账户
 
-	`cat /etc/passwd |awk  -F ':'  '{print $1}'`  
-	//awk -F指定域分隔符为':'，将记录按指定的域分隔符划分域，填充域，​$0则表示所有域,$1表示第一个域,​$n表示第n个域。
+```bash
+`cat /etc/passwd |awk  -F ':'  '{print $1}'`  
+//awk -F指定域分隔符为':'，将记录按指定的域分隔符划分域，填充域，​$0则表示所有域,$1表示第一个域,​$n表示第n个域。
+```
 
 6、sed -i '153,$d' .bash_history
 
@@ -92,7 +94,7 @@ Linux下常用的shell命令如：find、grep 、egrep、awk、sed
 
 **A、/var/log/secure**
 
-~~~
+~~~bash
 1、定位有多少IP在爆破主机的root帐号：    
 grep "Failed password for root" /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr | more
 
@@ -133,7 +135,7 @@ Jul 10 00:43:09 localhost sudo:    good : TTY=pts/4 ; PWD=/home/good ; USER=root
 
 软件安装升级卸载日志：
 
-~~~yum install gcc
+~~~bash
 yum install gcc
 
 [root@bogon ~]# more /var/log/yum.log

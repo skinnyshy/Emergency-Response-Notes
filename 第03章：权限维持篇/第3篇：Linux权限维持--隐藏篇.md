@@ -9,7 +9,7 @@ Linux 下创建一个隐藏文件：`touch  .test.txt`
 
 touch 命令可以创建一个文件，文件名前面加一个 点 就代表是隐藏文件,如下图：
 
-![](./image/privilege-2-1.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-2-1.png)
 
 一般的Linux下的隐藏目录使用命令`ls -l`是查看不出来的，只能查看到文件及文件夹，查看Linux下的隐藏文件需要用到命令：`ls -al`
 
@@ -35,14 +35,14 @@ touch -t 1401021042.30 webshell.php
 
 这个技巧常被用在后门，变成了一些难以清除的后门文件，令很多新手朋友感到头疼。
 
-~~~
-chattr +i evil.php 锁定文件
-lsattr  evil.php   属性查看
-chattr -i evil.php 解除锁定
-rm -rf 1.evil.php  删除文件
+~~~bash
+chattr +i evil.php # 锁定文件
+lsattr  evil.php   # 属性查看
+chattr -i evil.php #解除锁定
+rm -rf 1.evil.php  # 删除文件
 ~~~
 
-![](./image/privilege-2-2.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-2-2.png)
 
 ### 0x04 隐藏历史操作命令
 
@@ -50,39 +50,39 @@ rm -rf 1.evil.php  删除文件
 
 技巧一：只针对你的工作关闭历史记录
 
-~~~
+~~~bash
 [space]set +o history
-备注：[space] 表示空格。并且由于空格的缘故，该命令本身也不会被记录。
+# 备注：[space] 表示空格。并且由于空格的缘故，该命令本身也不会被记录。
 ~~~
 
 上面的命令会临时禁用历史功能，这意味着在这命令之后你执行的所有操作都不会记录到历史中，然而这个命令之前的所有东西都会原样记录在历史列表中。
 
 要重新开启历史功能，执行下面的命令：
 
-~~~
+~~~bash
 [Space]set -o history
-它将环境恢复原状，也就是你完成了你的工作，执行上述命令之后的命令都会出现在历史中。
+# 它将环境恢复原状，也就是你完成了你的工作，执行上述命令之后的命令都会出现在历史中。
 ~~~
 
 技巧二：从历史记录中删除指定的命令
 
 假设历史记录中已经包含了一些你不希望记录的命令。这种情况下我们怎么办？很简单。通过下面的命令来删除：
 
-~~~
+~~~bash
 history | grep "keyword"
 ~~~
 
 输出历史记录中匹配的命令，每一条前面会有个数字。从历史记录中删除那个指定的项：
 
-```
+```bash
 history -d [num]
 ```
 
-![](./image/privilege-2-3.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-2-3.png)
 
 这种技巧是关键记录删除，或者我们可以暴力点，比如前150行是用户的正常操作记录，150以后是攻击者操作记录。我们可以只保留正常的操作，删除攻击痕迹的历史操作记录，这里，我们只保留前150行：
 
-~~~
+~~~bash
 sed -i '150,$d' .bash_history
 ~~~
 
@@ -90,7 +90,7 @@ sed -i '150,$d' .bash_history
 
 #隐身登录系统，不会被w、who、last等指令检测到。
 
-~~~
+~~~bash
 ssh -T root@127.0.0.1 /bin/bash -i
 ~~~
 
@@ -145,7 +145,7 @@ ssh -p 80 root@192.168.28.128
 echo threathunterleaving | socat - tcp:192.168.28.128:80
 ~~~
 
-![](./image/privilege-2-4.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-2-4.png)
 
  具体文章详见：[远程遥控 IPTables 进行端口复用](https://www.freebuf.com/articles/network/137683.html)
 
@@ -171,11 +171,11 @@ echo /usr/local/lib/libprocesshider.so >> /etc/ld.so.preload
 
 测试：运行 evil_script.py，
 
-![](./image/privilege-2-5.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-2-5.png)
 
 此时发现在top 与 ps 中都无法找到 evil_script.py， cpu 使用率高,但是却找不到任何占用cpu高的程序。
 
-![](./image/privilege-2-6.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-2-6.png)
 
 如何在Linux中发现隐藏的进程，
 
@@ -186,13 +186,15 @@ echo /usr/local/lib/libprocesshider.so >> /etc/ld.so.preload
 ~~~
 # 安装
 sudo yum install unhide
-# 使用
+# 使用，参考：https://linux.cn/article-9288-1.html
 unhide [options] test_list
+unhide-tcp 
+unhide sys
 ~~~
 
 使用`unhide proc`发现隐藏进程evil_script.py，如下图所示：
 
-![](./image/privilege-2-7.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-2-7.png)
 
 第二种方法：进程注入工具linux-inject
 
@@ -212,7 +214,7 @@ cd linux-inject && make
 
 验证进程注入成功，如下图所示：
 
-![](./image/privilege-2-8.png)
+![](http://img-upaiyun-own.test.upcdn.net/privilege-2-8.png)
 
 
 

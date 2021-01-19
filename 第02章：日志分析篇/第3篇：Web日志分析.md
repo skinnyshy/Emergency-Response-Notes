@@ -30,7 +30,7 @@ Shell+Linux命令实现日志分析，一般结合grep、awk等命令等实现�
 
 Apache日志分析技巧：
 
-~~~
+~~~bash
 1、列出当天访问次数最多的IP命令：
 cut -d- -f 1 log_file|uniq -c | sort -rn | head -20
 
@@ -68,7 +68,7 @@ Web日志分析实例：通过nginx代理转发到内网某服务器，内网服
 
 首先访问图片木马的记录，只找到了一条，由于所有访问日志只记录了代理IP，并不能通过IP来还原攻击路径，这时候，可以利用浏览器指纹来定位。
 
-![](./image/log-3-1.png)
+![](http://img-upaiyun-own.test.upcdn.net/log-3-1.png)
 
 浏览器指纹：
 
@@ -78,7 +78,7 @@ Web日志分析实例：通过nginx代理转发到内网某服务器，内网服
 
 通过筛选与该浏览器指纹有关的日志记录，可以清晰地看到攻击者的攻击路径。
 
-![](./image/log-3-2.png)
+![](http://img-upaiyun-own.test.upcdn.net/log-3-2.png)
 
 3、对找到的访问日志进行解读，攻击者大致的访问路径如下：
 
@@ -154,7 +154,6 @@ cat  /www/logs/access.2019-02-23.log |awk '{print $7}'|sort|uniq -c|sort -rn|mor
 
 ```javascript
 cat /www/logs/access.2019-02-23.log |awk '{sum[$7]+=$10}END{for(i in sum){print sum[i],i}}'|sort -rn|more
-
 grep ' 200 ' /www/logs/access.2019-02-23.log |awk '{sum[$7]+=$10}END{for(i in sum){print sum[i],i}}'|sort -rn|more			
 ```
 
@@ -174,7 +173,7 @@ grep -v 0$ /www/logs/access.2019-02-23.log | awk -F '\" ' '{print $4" " $1}' web
 
 IP, URL 抽取：
 
-```javascript
-# tail -f /www/logs/access.2019-02-23.log | grep '/test.html' | awk '{print $1" "$7}'			
+```bash
+tail -f /www/logs/access.2019-02-23.log | grep '/test.html' | awk '{print $1" "$7}'			
 ```
 

@@ -34,7 +34,7 @@ Web 入侵：网页挂马、主页篡改、Webshell
 
   b、使用D盾_web查杀工具，集成了对克隆账号检测的功能。
 
-![](./image/sum-1-1.png)
+![](http://img-upaiyun-own.test.upcdn.net/sum-1-1.png)
 
 4、结合日志，查看管理员登录时间、用户名是否存在异常。
 
@@ -44,7 +44,7 @@ Web 入侵：网页挂马、主页篡改、Webshell
 
   b、导出 Windows 日志 -- 安全，利用微软官方工具 [Log Parser](https://www.microsoft.com/en-us/download/details.aspx?id=24659) 进行分析。
 
-![](./image/sum-1-2.png)
+![](http://img-upaiyun-own.test.upcdn.net/sum-1-2.png)
 
 
 
@@ -58,7 +58,7 @@ Web 入侵：网页挂马、主页篡改、Webshell
 
   b、根据 netstat 命令定位出的 PID 编号，再通过 tasklist 命令进行进程定位 `tasklist  | findstr "PID"`
 
-![](./image/sum-1-3.png)
+![](http://img-upaiyun-own.test.upcdn.net/sum-1-3.png)
 
 2、进程
 
@@ -118,7 +118,7 @@ HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Runonce
   
   e、组策略，运行 `gpedit.msc`
 
-![](./image/sum-1-4.png)
+![](http://img-upaiyun-own.test.upcdn.net/sum-1-4.png)
 
 
 
